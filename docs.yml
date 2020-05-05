@@ -1,0 +1,274 @@
+swagger: "2.0"
+info:
+  description: "Chequer Workspace Pre-Interview API Documentation"
+  version: "1.0.0"
+  title: "Chequer Workspace Management API"
+  contact:
+    email: "uutak2000@gmail.com"
+host: "localhost"
+tags:
+- name: "workspace"
+  description: "Management workspaces"
+- name: "users"
+  description: "Management users in workspaces"
+schemes:
+- "http"
+paths:
+  /workspace:
+    post:
+      tags:
+      - "workspace"
+      summary: "Register new workspace"
+      parameters:
+      - name: "body"
+        in: "body"
+        description: "Name payload that needs to be added to the workspace"
+        required: true
+        schema:
+          $ref: '#/definitions/WorkspaceAddPayload'
+      responses:
+        "200":
+          description: "Request Success."
+        "400":
+          description: "Workspace number that can be created is exceeded, Name is invalid, Name is too long"
+        "401":
+          description: "User not exists."
+  /workspace/{workspaceId}:
+    get:
+      tags:
+      - "workspace"
+      summary: "Get workspace information by workspaceId"
+      parameters:
+      - name: "workspaceId"
+        in: "path"
+        description: "The workspace ID to obtain information from."
+        required: true
+        type: "integer"
+        format: "int32"
+      responses:
+        "200":
+          description: "Returns the workspace corresponding to the ID you received."
+          schema:
+            $ref: '#/definitions/Workspace'
+        "400":
+          description: "Invalid ID supplied, Not member in workspace"
+        "401":
+          description: "User not exists."
+        "404":
+          description: "Workspace not found"
+    patch:
+      tags:
+        - "workspace"
+      summary: "Rename workspace"
+      parameters:
+      - name: "workspaceId"
+        in: "path"
+        description: "The workspace ID to rename it."
+        required: true
+        type: "integer"
+        format: "int32"
+      - name: "body"
+        in: "body"
+        description: "Name payload that needs to be renamed to the workspace"
+        required: true
+        schema:
+          $ref: '#/definitions/WorkspaceAddPayload'
+      responses:
+        "200":
+          description: "Request Success."
+        "400":
+          description: "Invalid ID supplied, Not owner in workspace, Name is invalid, Name is too long"
+        "401":
+          description: "User not exists."
+        "404":
+          description: "Workspace not found"
+    delete:
+      tags:
+      - "workspace"
+      summary: "Delete workspace"
+      parameters:
+      - name: "workspaceId"
+        in: "path"
+        description: "The workspace ID to obtain information from."
+        required: true
+        type: "integer"
+        format: "int32"
+      responses:
+        "200":
+          description: "Request Success."
+        "400":
+          description: "Invalid ID supplied, Not owner in workspace"
+        "401":
+          description: "User not exists."
+        "404":
+          description: "Workspace not found"
+  /workspace/{workspaceId}/users:
+    get:
+      tags:
+      - "users"
+      summary: "Get users in workspace by workspaceId"
+      parameters:
+      - name: "workspaceId"
+        in: "path"
+        description: "The workspace ID to get users."
+        required: true
+        type: "integer"
+        format: "int32"
+      responses:
+        "200":
+          description: "Request Success."
+          schema:
+            type: "array"
+            items:
+              $ref: '#/definitions/WorkspaceUser'
+        "400":
+          description: "Invalid ID supplied, Not member in workspace"
+        "401":
+          description: "User not exists."
+        "404":
+          description: "Workspace not found"
+    patch:
+      tags:
+      - "users"
+      summary: "Remove users in workspace"
+      parameters:
+      - name: "workspaceId"
+        in: "path"
+        description: "The workspace ID to remove users."
+        required: true
+        type: "integer"
+        format: "int32"
+      - name: "body"
+        in: "body"
+        description: "Users that will remove in workspace"
+        required: true
+        schema:
+          $ref: '#/definitions/WorkspaceRemoveUsersPayload'
+      responses:
+        "200":
+          description: "Request Success."
+        "400":
+          description: "Invalid ID supplied, Not member in workspace"
+        "401":
+          description: "User not exists."
+        "404":
+          description: "Workspace not found"
+    post:
+      tags:
+      - "users"
+      summary: "Add user to workspace"
+      parameters:
+      - name: "workspaceId"
+        in: "path"
+        description: "The workspace ID to add user."
+        required: true
+        type: "integer"
+        format: "int32"
+      - name: "body"
+        in: "body"
+        description: "User payload that needs to add user to the workspace"
+        required: true
+        schema:
+          $ref: '#/definitions/WorkspaceUserPayload'
+      responses:
+        "200":
+          description: "Request Success."
+        "400":
+          description: "Invalid ID supplied, Not member in workspace"
+        "401":
+          description: "User not exists."
+        "404":
+          description: "Workspace not found"
+  /workspace/{workspaceId}/users/{userIdentifier}:
+    delete:
+      tags:
+      - "users"
+      summary: "Remove user in workspace"
+      parameters:
+      - name: "workspaceId"
+        in: "path"
+        description: "The workspace ID to get users."
+        required: true
+        type: "integer"
+        format: "int32"
+      - name: "userIdentifier"
+        in: "path"
+        type: "string"
+        description: "User identifier value that needs to remove user to the workspace"
+        required: true
+      responses:
+        "200":
+          description: "Request Success."
+        "400":
+          description: "Invalid ID supplied, Not member in workspace"
+        "401":
+          description: "User not exists."
+        "404":
+          description: "Workspace not found"
+definitions:
+  Workspace:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        example: "Test Workspace"
+        description: "Workspace's name."
+      creator:
+        type: "string"
+        example: "tony_jang@chequer.io"
+        description: "Workspace's creator."
+      owner:
+        type: "string"
+        example: "tony_jang@chequer.io"
+        description: "Workspace's owner. (owner can be changed)"
+      maximum:
+        type: "integer"
+        example: 10
+        description: "Workspace's maximum user count"
+        default: 10
+      isDeleted:
+        type: "boolean"
+        example: false
+        description: "Represent state that workspace is deleted (if deleted, workspace will not shown)"
+        default: false
+  WorkspaceUser:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        example: "Name"
+        description: "Workspace User's name."
+      status:
+        type: "string"
+        example: "Owner"
+        description: "Workspace User's status (Owner/Member)"
+  WorkspaceUserPayload:
+    type: "object"
+    properties:
+      identifier:
+        type: "string"
+        description: "The workspace user identifier to be added."
+  WorkspaceAddPayload:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        example: "Test Workspace"
+        description: "Workspace name."
+  WorkspaceRemoveUsersPayload:
+    type: "object"
+    properties:
+      removeUsers:
+        type: "array"
+        items:
+          type: "string"
+        
+  ErrorResponse:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+        description: "Workspace name."
+      code:
+        type: "string"
+        description: "Error code."
