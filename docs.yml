@@ -20,6 +20,11 @@ paths:
       - "workspace"
       summary: "Register new workspace"
       parameters:
+      - name: "X-User-Id"
+        description: "Current user identifier"
+        in: "header"
+        required: true
+        type: "string"
       - name: "body"
         in: "body"
         description: "Name payload that needs to be added to the workspace"
@@ -29,6 +34,8 @@ paths:
       responses:
         "200":
           description: "Request Success."
+          schema:
+            $ref: '#/definitions/WorkspacePostResult'
         "400":
           description: "Workspace number that can be created is exceeded, Name is invalid, Name is too long"
         "401":
@@ -39,12 +46,17 @@ paths:
       - "workspace"
       summary: "Get workspace information by workspaceId"
       parameters:
+      - name: "X-User-Id"
+        description: "Current user identifier"
+        in: "header"
+        required: true
+        type: "string"
       - name: "workspaceId"
         in: "path"
         description: "The workspace ID to obtain information from."
         required: true
-        type: "integer"
-        format: "int32"
+        type: "string"
+        format: "guid"
       responses:
         "200":
           description: "Returns the workspace corresponding to the ID you received."
@@ -61,12 +73,17 @@ paths:
         - "workspace"
       summary: "Rename workspace"
       parameters:
+      - name: "X-User-Id"
+        description: "Current user identifier"
+        in: "header"
+        required: true
+        type: "string"
       - name: "workspaceId"
         in: "path"
         description: "The workspace ID to rename it."
         required: true
-        type: "integer"
-        format: "int32"
+        type: "string"
+        format: "guid"
       - name: "body"
         in: "body"
         description: "Name payload that needs to be renamed to the workspace"
@@ -87,12 +104,17 @@ paths:
       - "workspace"
       summary: "Delete workspace"
       parameters:
+      - name: "X-User-Id"
+        description: "Current user identifier"
+        in: "header"
+        required: true
+        type: "string"
       - name: "workspaceId"
         in: "path"
         description: "The workspace ID to obtain information from."
         required: true
-        type: "integer"
-        format: "int32"
+        type: "string"
+        format: "guid"
       responses:
         "200":
           description: "Request Success."
@@ -108,12 +130,17 @@ paths:
       - "users"
       summary: "Get users in workspace by workspaceId"
       parameters:
+      - name: "X-User-Id"
+        description: "Current user identifier"
+        in: "header"
+        required: true
+        type: "string"
       - name: "workspaceId"
         in: "path"
         description: "The workspace ID to get users."
         required: true
-        type: "integer"
-        format: "int32"
+        type: "string"
+        format: "guid"
       responses:
         "200":
           description: "Request Success."
@@ -132,12 +159,17 @@ paths:
       - "users"
       summary: "Remove users in workspace"
       parameters:
+      - name: "X-User-Id"
+        description: "Current user identifier"
+        in: "header"
+        required: true
+        type: "string"
       - name: "workspaceId"
         in: "path"
         description: "The workspace ID to remove users."
         required: true
-        type: "integer"
-        format: "int32"
+        type: "string"
+        format: "guid"
       - name: "body"
         in: "body"
         description: "Users that will remove in workspace"
@@ -158,12 +190,17 @@ paths:
       - "users"
       summary: "Add user to workspace"
       parameters:
+      - name: "X-User-Id"
+        description: "Current user identifier"
+        in: "header"
+        required: true
+        type: "string"
       - name: "workspaceId"
         in: "path"
         description: "The workspace ID to add user."
         required: true
-        type: "integer"
-        format: "int32"
+        type: "string"
+        format: "guid"
       - name: "body"
         in: "body"
         description: "User payload that needs to add user to the workspace"
@@ -185,12 +222,17 @@ paths:
       - "users"
       summary: "Remove user in workspace"
       parameters:
+      - name: "X-User-Id"
+        description: "Current user identifier"
+        in: "header"
+        required: true
+        type: "string"
       - name: "workspaceId"
         in: "path"
         description: "The workspace ID to get users."
         required: true
-        type: "integer"
-        format: "int32"
+        type: "string"
+        format: "guid"
       - name: "userIdentifier"
         in: "path"
         type: "string"
@@ -262,7 +304,13 @@ definitions:
         type: "array"
         items:
           type: "string"
-        
+  WorkspacePostResult:
+    type: "object"
+    properties:
+      workspaceId:
+        type: "string"
+        format: "guid"
+  
   ErrorResponse:
     type: "object"
     properties:
