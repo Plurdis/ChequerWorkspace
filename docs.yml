@@ -154,37 +154,6 @@ paths:
           description: "User not exists."
         "404":
           description: "Workspace not found"
-    patch:
-      tags:
-      - "users"
-      summary: "Remove users in workspace"
-      parameters:
-      - name: "X-User-Id"
-        description: "Current user identifier"
-        in: "header"
-        required: true
-        type: "string"
-      - name: "workspaceId"
-        in: "path"
-        description: "The workspace ID to remove users."
-        required: true
-        type: "string"
-        format: "guid"
-      - name: "body"
-        in: "body"
-        description: "Users that will remove in workspace"
-        required: true
-        schema:
-          $ref: '#/definitions/WorkspaceRemoveUsersPayload'
-      responses:
-        "200":
-          description: "Request Success."
-        "400":
-          description: "Invalid ID supplied, Not member in workspace"
-        "401":
-          description: "User not exists."
-        "404":
-          description: "Workspace not found"
     post:
       tags:
       - "users"
@@ -207,6 +176,37 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/WorkspaceUserPayload'
+      responses:
+        "200":
+          description: "Request Success."
+        "400":
+          description: "Invalid ID supplied, Not member in workspace"
+        "401":
+          description: "User not exists."
+        "404":
+          description: "Workspace not found"
+    patch:
+      tags:
+      - "users"
+      summary: "Remove users in workspace"
+      parameters:
+      - name: "X-User-Id"
+        description: "Current user identifier"
+        in: "header"
+        required: true
+        type: "string"
+      - name: "workspaceId"
+        in: "path"
+        description: "The workspace ID to remove users."
+        required: true
+        type: "string"
+        format: "guid"
+      - name: "body"
+        in: "body"
+        description: "Users that will remove in workspace"
+        required: true
+        schema:
+          $ref: '#/definitions/WorkspaceRemoveUsersPayload'
       responses:
         "200":
           description: "Request Success."
