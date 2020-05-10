@@ -11,9 +11,9 @@ namespace ChequerWorkspace.Filters
     {
         public override void OnActionExecuting(ActionExecutingContext context)
         {            
-            var identifier = (string) context.HttpContext.Request.Headers["identifier"];
+            var identifier = (string) context.HttpContext.Request.Headers[XUserIdAttribute.HeaderName];
 
-            if (MockDatabase.Users.Count(i => i.Identifier == identifier) == 0)
+            if (MockDatabase.Users.All(i => i.Identifier != identifier))
             {
                 context.Result = new UnauthorizedObjectResult(new ErrorResponse("User does not exists", "INVALID_USER_IDENTIFIER"));
                 return;

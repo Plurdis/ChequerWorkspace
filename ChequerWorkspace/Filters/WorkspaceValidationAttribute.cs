@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using ChequerWorkspace.Database;
 using ChequerWorkspace.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +13,7 @@ namespace ChequerWorkspace.Filters
         {
             var workspaceIdStr = (string) context.HttpContext.Request.RouteValues["workspaceId"];
             
-            if (!int.TryParse(workspaceIdStr, out int workspaceId))
+            if (!Guid.TryParse(workspaceIdStr, out var workspaceId))
             {
                 context.Result = new BadRequestObjectResult(new ErrorResponse("Workspace Id is not valid", "INVALID_WORKSPACE_ID"));
                 return;
