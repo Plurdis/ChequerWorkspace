@@ -111,7 +111,7 @@ paths:
         type: "string"
       - name: "workspaceId"
         in: "path"
-        description: "The workspace ID to obtain information from."
+        description: "The workspace ID to delete."
         required: true
         type: "string"
         format: "guid"
