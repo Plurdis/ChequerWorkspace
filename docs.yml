@@ -229,7 +229,7 @@ paths:
         type: "string"
       - name: "workspaceId"
         in: "path"
-        description: "The workspace ID to get users."
+        description: "The workspace ID to remove user."
         required: true
         type: "string"
         format: "guid"
